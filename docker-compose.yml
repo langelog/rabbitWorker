@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  uworker-test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: ${PRODUCT}/${SERVICE}:${VERSION}
+    restart: unless-stopped
+    tty: true
+    scale: 1
+    environment:
+      PRODUCT: ${PRODUCT}
+      SERVICE: ${SERVICE}
+      VERSION: ${VERSION}
+      PACKVER: ${PACKVER}
+networks:
+  default:
+    name: ${DEV_NETWORK}
+    external: true
+  
