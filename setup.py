@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            'service = service.main:main'
+            'service = launcher.main:main'
         ]
     }
 )

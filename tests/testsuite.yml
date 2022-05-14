@@ -1,0 +1,47 @@
+name: TestSuite RabbitMQ
+vars:
+  addrs: 'amqp://rabbitmq:5672'
+  user: guest
+  password: guest
+  test_id: "{{ randNumeric 7 }}"
+testcases:
+  - name: RabbitMQ publish (work Q)
+    steps:
+      - type: rabbitmq
+        addrs: {{.addrs}}
+        user: {{.user}}
+        password: {{.password}}
+        clientType: publisher
+        qName: uworker
+        durable: true
+        messages:
+          - value: |
+              {
+                "type": "request",
+                "reply_to": "example_responses",
+                "id": {{.test_id}},
+                "payload": {
+                  "action": "collect_api",
+                  "source": "https://reqres.in/api/products/3",
+                  "target": "data"
+                }
+              }
+            contentType: application/json
+            contentEncoding: utf8
+            headers:
+            myCustomHeader: value
+      - type: exec
+        script: |
+          echo "Waiting for response"
+          sleep 5
+      - type: rabbitmq
+        addrs: {{.addrs}}
+        user: {{.user}}
+        password: {{.password}}
+        clientType: subscriber
+        qName: example_responses
+        durable: true
+        messageLimit: 1
+        assertions:
+          - result.bodyjson.bodyjson0.type ShouldEqual response
+          - result.bodyjson.bodyjson0.id ShouldEqual {{.test_id}}

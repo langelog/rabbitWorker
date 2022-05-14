@@ -1,1 +1,2 @@
 python-dotenv==0.20.0
+pika==1.2.1

@@ -1,9 +1,11 @@
+from typing import *
 from time import sleep
 
-def main():
-    print("Hello World!")
-    sleep(10)
-    print("Bye!")
+def entry(request: Dict) -> Dict:
+    print("entering...")
+    sleep(2)
+    return {
+        "your_request": request,
+        "secret": "43"
+    }
 
-if __name__ == "__main__":
-    exit(main())

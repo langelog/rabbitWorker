@@ -1,0 +1,6 @@
+{
+  "verbose": true,
+  "watch": ["service/", "launcher/"],
+  "ext": "py",
+  "exec": "pip install . && echo '#########[ RUNNING SERVICE ]#########' && service"
+}

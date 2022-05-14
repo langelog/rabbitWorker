@@ -1,18 +1,22 @@
 version: "3.8"
 services:
-  uworker-test:
+  service:
     build:
       context: .
+      target: dev
       dockerfile: ./Dockerfile
-    image: ${PRODUCT}/${SERVICE}:${VERSION}
+    image: ${PRODUCT}/${SERVICE}:${VERSION}d
+    container_name: ${SERVICE}
     restart: unless-stopped
     tty: true
+    volumes:
+      - ./launcher:/app/launcher:ro
+      - ./service:/app/service:ro
     scale: 1
-    environment:
-      PRODUCT: ${PRODUCT}
-      SERVICE: ${SERVICE}
-      VERSION: ${VERSION}
-      PACKVER: ${PACKVER}
+    env_file:
+      - ./.env
+      - ./.env.secrets
+
 networks:
   default:
     name: ${DEV_NETWORK}
